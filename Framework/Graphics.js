@@ -16,6 +16,8 @@ class Graphics
 		
 		// console.log( this.width + " " + this.height )
 		
+		this.nekoCanv = null
+		
 		const self = this
 		addEventListener( "resize",function( e )
 		{
@@ -27,6 +29,14 @@ class Graphics
 	{
 		self.width = self.canvas.width = window.innerWidth
 		self.height = self.canvas.height = window.innerHeight
+		
+		if( self.nekoCanv ) self.nekoCanv.OnCanvResize( self )
+	}
+	
+	SetNekoCanv( nekoCanv )
+	{
+		this.nekoCanv = nekoCanv
+		this.UpdateCanvSize( this )
 	}
 	
 	DrawRect( x,y,w,h,c )

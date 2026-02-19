@@ -2,8 +2,8 @@ class NekoCanv
 {
 	constructor()
 	{
-		this.canvPos = new Vec2( 50,50 )
-		this.canvSize = new Vec2( 200,200 )
+		this.canvPos = Vec2.Zero()
+		this.canvSize = new Vec2( 32,32 ) // 200,200
 		
 		this.canv = document.getElementById( "drawcanv" )
 		this.canv.width = this.canvSize.x
@@ -23,59 +23,10 @@ class NekoCanv
 	Update( mouse,kbd )
 	{
 		// const botRight = this.canvPos.Copy().Add( this.canvSize.Copy().Scale( this.canvScale ) )
-		
-		if( mouse.down )
-		{
-			const brushSize = 5
-			const brushCol = "cyan"
-			
-			const testMousePos = new Vec2( mouse.x,mouse.y ).Subtract( this.canvPos )
-				.Divide( this.canvScale ).Floorify()
-			if( testMousePos.x >= 0 && testMousePos.x < this.canvSize.x &&
-				testMousePos.y >= 0 && testMousePos.y < this.canvSize.y )
-			{
-				let spots = []
-				if( !this.prevMousePos.EqualsXY( -1,-1 ) )
-				{
-					const ctrl = this.prevMousePos.Copy().Add( testMousePos ).Divide( 2 )
-					const curve = this.GenerateQuadCurve(
-						this.prevMousePos.x,this.prevMousePos.y,
-						testMousePos.x,testMousePos.y,
-						ctrl.x,ctrl.y )
-					spots = curve
-				}
-				else
-				{
-					// this.FillRect( Math.floor( testMousePos.x - brushSize / 2 ),
-					// 	Math.floor( testMousePos.y - brushSize / 2 ),
-					// 	brushSize,brushSize,
-					// 	brushCol )
-					spots.push( testMousePos.Copy().Floorify() )
-				}
-				
-				for( const spot of spots )
-				{
-					this.FillCircle( Math.floor( spot.x ),
-						Math.floor( spot.y ),
-						brushSize / 2,
-						brushCol )
-				}
-				
-				this.prevMousePos = testMousePos
-			}
-			
-			// console.log( testMousePos.x + " " + testMousePos.y )
-		}
-		else this.prevMousePos.SetXY( -1,-1 )
 	}
 	
 	Draw( gfx )
 	{
-		const maxXScale = gfx.width / this.canvSize.x
-		const maxYScale = gfx.height / this.canvSize.y
-		this.canvScale = Math.min( maxXScale,maxYScale ) / 2
-		this.canvPos.x = gfx.width / 2 - this.canvSize.x * this.canvScale / 2
-		this.canvPos.y = gfx.height / 2 - this.canvSize.y * this.canvScale / 2
 		gfx.context.drawImage( this.canv,this.canvPos.x,this.canvPos.y,
 			this.canvSize.x * this.canvScale,this.canvSize.y * this.canvScale )
 	}
@@ -110,5 +61,66 @@ class NekoCanv
 			curveArr.push( new Vec2( Math.floor( x ), Math.floor( y ) ) )
 		}
 		return( curveArr )
+	}
+	
+	OnMouseUpdate( mouse )
+	{
+		if( mouse.down )
+		{
+			const brushSize = 2
+			const brushCol = "cyan"
+			// const brushSize = 1
+			// const brushCol = "cyan"
+			
+			const testMousePos = new Vec2( mouse.x,mouse.y ).Subtract( this.canvPos )
+				.Divide( this.canvScale ).Floorify()
+			if( testMousePos.x >= 0 && testMousePos.x < this.canvSize.x &&
+				testMousePos.y >= 0 && testMousePos.y < this.canvSize.y )
+			{
+				let spots = []
+				if( !this.prevMousePos.EqualsXY( -1,-1 ) )
+				{
+					const ctrl = this.prevMousePos.Copy().Add( testMousePos ).Divide( 2 )
+					const curve = this.GenerateQuadCurve(
+						this.prevMousePos.x,this.prevMousePos.y,
+						testMousePos.x,testMousePos.y,
+						ctrl.x,ctrl.y )
+					spots = curve
+				}
+				else
+				{
+					spots.push( testMousePos.Copy().Floorify() )
+				}
+				
+				for( const spot of spots )
+				{
+					// this.FillRect( Math.floor( spot.x ),
+					// 	Math.floor( spot.y ),
+					// 	brushSize,brushSize,
+					// 	brushCol )
+					this.FillCircle( Math.floor( spot.x ),
+						Math.floor( spot.y ),
+						brushSize / 2,
+						brushCol )
+				}
+				
+				this.prevMousePos = testMousePos
+			}
+			
+			// console.log( testMousePos.x + " " + testMousePos.y )
+		}
+		else this.prevMousePos.SetXY( -1,-1 )
+	}
+	
+	OnCanvResize( gfx )
+	{
+		const maxXScale = gfx.width / this.canvSize.x
+		const maxYScale = gfx.height / this.canvSize.y
+		this.canvScale = Math.round( Math.min( maxXScale,maxYScale ) / 2 )
+		this.canvPos.x = Math.round( gfx.width / 2 - this.canvSize.x * this.canvScale / 2 )
+		this.canvPos.y = Math.round( gfx.height / 2 - this.canvSize.y * this.canvScale / 2 )
+		
+		gfx.context.imageSmoothingEnabled = false
+		gfx.context.mozImageSmoothingEnabled = false
 	}
 }

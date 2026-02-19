@@ -10,44 +10,53 @@ class Mouse
 		
 		this.usingTouch = false
 		
+		this.nekoCanv = null
+		this.main = null
+		
 		const self = this
 		
 		canv.addEventListener( "mousedown",function( e )
 		{
 			if( e.button == 0 ) self.down = true
 			
-			this.usingTouch = false
+			self.usingTouch = false
+			
+			if( self.nekoCanv ) self.nekoCanv.OnMouseUpdate( self )
+			if( self.main ) self.main.requiresUpdate = true
 		} )
 		canv.addEventListener( "mouseup",function( e )
 		{
 			if( e.button == 0 ) self.down = false
 			
-			this.usingTouch = false
+			self.usingTouch = false
+			
+			if( self.nekoCanv ) self.nekoCanv.OnMouseUpdate( self )
+			if( self.main ) self.main.requiresUpdate = true
 		} )
 		canv.addEventListener( "mousemove",function( e )
 		{
-			const boundingRect = canv.getBoundingClientRect()
-			const docElement = document.documentElement
+			self.SetMousePos( e.clientX,e.clientY,self,canv )
 			
-			self.x = e.clientX - boundingRect.left - docElement.scrollLeft
-			self.y = e.clientY - boundingRect.top - docElement.scrollTop
-			
-			this.usingTouch = false
+			self.usingTouch = false
 		} )
 		
 		canv.addEventListener( "touchstart",function( e )
 		{
 			e.preventDefault()
-			
-			const boundingRect = canv.getBoundingClientRect()
-			const docElement = document.documentElement
-			
-			self.x = e.touches[0].clientX - boundingRect.left - docElement.scrollLeft
-			self.y = e.touches[0].clientY - boundingRect.top - docElement.scrollTop
+			self.SetMousePos( e.touches[0].clientX,e.touches[0].clientY,self,canv )
 			
 			self.down = true
 			
-			this.usingTouch = true
+			self.usingTouch = true
+		} )
+		canv.addEventListener( "touchmove",function( e )
+		{
+			e.preventDefault()
+			self.SetMousePos( e.touches[0].clientX,e.touches[0].clientY,self,canv )
+			
+			self.down = true
+			
+			self.usingTouch = true
 		} )
 		canv.addEventListener( "touchend",function( e )
 		{
@@ -55,7 +64,29 @@ class Mouse
 			
 			self.down = false
 			
-			this.usingTouch = true
+			self.usingTouch = true
 		} )
+	}
+	
+	SetMousePos( inputX,inputY,self,canv )
+	{
+		const boundingRect = canv.getBoundingClientRect()
+		const docElement = document.documentElement
+		
+		self.x = inputX - boundingRect.left - docElement.scrollLeft
+		self.y = inputY - boundingRect.top - docElement.scrollTop
+		
+		if( self.nekoCanv ) self.nekoCanv.OnMouseUpdate( self )
+		if( self.main ) self.main.requiresUpdate = true
+	}
+	
+	SetNekoCanv( nekoCanv )
+	{
+		this.nekoCanv = nekoCanv
+	}
+	
+	SetMain( main )
+	{
+		this.main = main
 	}
 }

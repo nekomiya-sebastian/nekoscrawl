@@ -7,6 +7,11 @@ class Main
 		this.kbd = new Keyboard( this.gfx )
 		
 		this.nekoCanv = new NekoCanv()
+		this.mouse.SetNekoCanv( this.nekoCanv )
+		this.mouse.SetMain( this )
+		this.gfx.SetNekoCanv( this.nekoCanv )
+		
+		this.requiresUpdate = true
 	}
 	
 	Update( dt )
@@ -34,6 +39,12 @@ setInterval( function()
 	prevTime = now
 	
 	main.Update( dt )
-	main.gfx.DrawRect( 0,0,main.gfx.width,main.gfx.height,"#000000" )
-	main.Draw()
+	
+	if( main.requiresUpdate ) // only redraw if absolutely necessary
+	{
+		main.gfx.DrawRect( 0,0,main.gfx.width,main.gfx.height,"#000000" )
+		main.Draw()
+		
+		main.requiresUpdate = false
+	}
 },delay )

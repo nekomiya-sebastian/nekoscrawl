@@ -10,7 +10,7 @@ pseudo game about drawing
 			canvas size of like 500x500px max maybe
 		few brush types - basic, transparent
 		color picker is just a list of like 2-10 or so colors (that change in random mode - amount & colors)
-		maybe just 1 level of undo/redo queue
+		/maybe just 1 level of undo/redo queue
 	name ideas
 		nekopaint
 		nekodraw
