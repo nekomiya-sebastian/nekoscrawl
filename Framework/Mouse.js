@@ -22,7 +22,7 @@ class Mouse
 			self.usingTouch = false
 			
 			if( self.nekoCanv ) self.nekoCanv.OnMouseUpdate( self )
-			if( self.main ) self.main.requiresUpdate = true
+			if( self.main ) self.main.RequestUpdate()
 		} )
 		canv.addEventListener( "mouseup",function( e )
 		{
@@ -31,7 +31,7 @@ class Mouse
 			self.usingTouch = false
 			
 			if( self.nekoCanv ) self.nekoCanv.OnMouseUpdate( self )
-			if( self.main ) self.main.requiresUpdate = true
+			if( self.main ) self.main.RequestUpdate()
 		} )
 		canv.addEventListener( "mousemove",function( e )
 		{
@@ -77,7 +77,7 @@ class Mouse
 		self.y = inputY - boundingRect.top - docElement.scrollTop
 		
 		if( self.nekoCanv ) self.nekoCanv.OnMouseUpdate( self )
-		if( self.main ) self.main.requiresUpdate = true
+		if( self.main ) self.main.RequestUpdate()
 	}
 	
 	SetNekoCanv( nekoCanv )

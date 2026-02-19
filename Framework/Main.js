@@ -10,6 +10,7 @@ class Main
 		this.mouse.SetNekoCanv( this.nekoCanv )
 		this.mouse.SetMain( this )
 		this.gfx.SetNekoCanv( this.nekoCanv )
+		this.gfx.SetMain( this )
 		
 		this.requiresUpdate = true
 	}
@@ -26,6 +27,11 @@ class Main
 		const rectSize = 5
 		const drawPos = new Vec2( this.mouse.x,this.mouse.y ).Subtract( Vec2.One().Scale( rectSize / 2 ) )
 		this.gfx.DrawRect( drawPos.x,drawPos.y,rectSize,rectSize,"red" )
+	}
+	
+	RequestUpdate()
+	{
+		this.requiresUpdate = true
 	}
 }
 

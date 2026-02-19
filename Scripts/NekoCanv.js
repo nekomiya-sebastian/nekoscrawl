@@ -67,7 +67,7 @@ class NekoCanv
 	{
 		if( mouse.down )
 		{
-			const brushSize = 2
+			const brushSize = 3
 			const brushCol = "cyan"
 			// const brushSize = 1
 			// const brushCol = "cyan"
@@ -116,9 +116,10 @@ class NekoCanv
 	{
 		const maxXScale = gfx.width / this.canvSize.x
 		const maxYScale = gfx.height / this.canvSize.y
-		this.canvScale = Math.round( Math.min( maxXScale,maxYScale ) / 2 )
-		this.canvPos.x = Math.round( gfx.width / 2 - this.canvSize.x * this.canvScale / 2 )
-		this.canvPos.y = Math.round( gfx.height / 2 - this.canvSize.y * this.canvScale / 2 )
+		
+		this.canvScale = Math.min( maxXScale,maxYScale ) / 2
+		this.canvPos.x = gfx.width / 2 - this.canvSize.x * this.canvScale / 2
+		this.canvPos.y = gfx.height / 2 - this.canvSize.y * this.canvScale / 2
 		
 		gfx.context.imageSmoothingEnabled = false
 		gfx.context.mozImageSmoothingEnabled = false
