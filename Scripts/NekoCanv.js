@@ -20,8 +20,6 @@ class NekoCanv
 		
 		this.prevMousePos = new Vec2( -1,-1 )
 		
-		this.brushSize = 3
-		
 		this.iconSize = 1
 		
 		this.toolSprs = [
@@ -48,7 +46,23 @@ class NekoCanv
 		this.colorInd = 0
 		this.colorSelectorSpr = new Sprite( "Images/ColorSelector.png" )
 		
+		this.sizeSprs = Anim.GenSprArr( "Images/BrushSize",6 )
+		this.sizes = [
+			1, // single pixel
+			1,
+			3,
+			7,
+			15,
+			25
+		]
+		this.pixelSquareInd = 0
+		NekoUtils.Assert( this.sizeSprs.length == this.sizes.length,"Size sprite count mismatch!" )
+		this.sizeHitboxes = []
+		this.sizeInd = 1
+		
 		this.canClick = true
+		this.startClickOnCanvas = false
+		this.prevMouseDown = false
 	}
 	
 	Update( mouse,kbd )
@@ -81,6 +95,15 @@ class NekoCanv
 					if( this.colorHitboxes[i].Contains( mouse.x,mouse.y ) )
 					{
 						this.colorInd = i
+						break
+					}
+				}
+				
+				for( let i = 0; i < this.sizeHitboxes.length; ++i )
+				{
+					if( this.sizeHitboxes[i].Contains( mouse.x,mouse.y ) )
+					{
+						this.sizeInd = i
 						break
 					}
 				}
@@ -117,15 +140,31 @@ class NekoCanv
 					false,this.iconSize / this.toolSprSize )
 			}
 		}
+		
+		for( let i = 0; i < this.sizeHitboxes.length; ++i )
+		{
+			const curHitbox = this.sizeHitboxes[i]
+			if( i == this.sizeInd )
+			{
+				this.toolSelectorSpr.Draw( curHitbox.x,curHitbox.y,gfx,
+					false,this.iconSize / this.toolSprSize )
+			}
+			this.sizeSprs[i].Draw( curHitbox.x,curHitbox.y,gfx,false,this.iconSize / this.toolSprSize )
+		}
 	}
 	
 	BrushFunc( x,y,self )
 	{
-		self.FillCircle( x,y,self.brushSize,self.GetCurColor() )
+		const brushSize = self.GetBrushSize()
+		if( self.sizeInd == self.pixelSquareInd )
+		{
+			self.FillRect( x - brushSize / 2,y - brushSize / 2,brushSize,brushSize,self.GetCurColor() )
+		}
+		else self.FillCircle( x,y,brushSize,self.GetCurColor() )
 	}
 	EraserFunc( x,y,self )
 	{
-		self.FillCircle( x,y,self.brushSize,self.bgCol )
+		self.FillCircle( x,y,self.GetBrushSize(),self.bgCol )
 	}
 	
 	FillRect( x,y,w,h,color )
@@ -165,8 +204,13 @@ class NekoCanv
 		{
 			const testMousePos = new Vec2( mouse.x,mouse.y ).Subtract( this.canvPos )
 				.Divide( this.canvScale ).Floorify()
-			if( testMousePos.x >= 0 && testMousePos.x < this.canvSize.x &&
+			
+			const mouseOnCanv = ( testMousePos.x >= 0 && testMousePos.x < this.canvSize.x &&
 				testMousePos.y >= 0 && testMousePos.y < this.canvSize.y )
+			
+			if( !this.prevMouseDown && mouseOnCanv ) this.startClickOnCanvas = true
+			
+			if( mouseOnCanv && this.startClickOnCanvas )
 			{
 				let spots = []
 				if( !this.prevMousePos.EqualsXY( -1,-1 ) )
@@ -187,7 +231,7 @@ class NekoCanv
 				{
 					// this.brushShapeFuncs[this.curBrush]( Math.floor( spot.x ),
 					// 	Math.floor( spot.y ),
-					// 	this.brushSize,
+					// 	this.GetBrushSize(),
 					// 	this.colors[this.colorInd],
 					// 	this )
 					this.toolFuncs[this.toolInd]( spot.x,spot.y,this )
@@ -198,7 +242,13 @@ class NekoCanv
 			
 			// console.log( testMousePos.x + " " + testMousePos.y )
 		}
-		else this.prevMousePos.SetXY( -1,-1 )
+		else
+		{
+			this.prevMousePos.SetXY( -1,-1 )
+			this.startClickOnCanvas = false
+		}
+		
+		this.prevMouseDown = mouse.down
 	}
 	
 	OnCanvResize( gfx )
@@ -213,9 +263,10 @@ class NekoCanv
 		gfx.context.imageSmoothingEnabled = false
 		gfx.context.mozImageSmoothingEnabled = false
 		
-		this.iconSize = this.canvScale * 30
+		this.iconSize = this.canvScale * 30 * ( ( this.canvSize.x + this.canvSize.y ) / 2 / 200 )
 		
-		const toolX = this.canvPos.x
+		const totalToolSize = this.iconSize * this.toolFuncs.length
+		const toolX = this.canvPos.x + ( this.canvSize.x * this.canvScale / 2 ) - totalToolSize / 2
 		const toolY = this.canvPos.y - this.iconSize
 		for( let i = 0; i < this.toolFuncs.length; ++i )
 		{
@@ -233,6 +284,15 @@ class NekoCanv
 			this.colorHitboxes[i] = new Hitbox( colorX + i * this.iconSize,colorY,
 				this.iconSize,this.iconSize )
 		}
+		
+		const totalSizeSize = this.iconSize * this.sizes.length
+		const sizeX = this.canvPos.x + ( this.canvSize.x * this.canvScale / 2 ) - totalSizeSize / 2
+		const sizeY = colorY + this.iconSize
+		for( let i = 0; i < this.sizes.length; ++i )
+		{
+			this.sizeHitboxes[i] = new Hitbox( sizeX + i * this.iconSize,sizeY,
+				this.iconSize,this.iconSize )
+		}
 	}
 	
 	DownloadImage()
@@ -247,5 +307,10 @@ class NekoCanv
 	GetCurColor()
 	{
 		return( this.colors[this.colorInd] )
+	}
+	
+	GetBrushSize()
+	{
+		return( this.sizes[this.sizeInd] )
 	}
 }
