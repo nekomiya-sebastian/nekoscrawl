@@ -41,10 +41,12 @@ class NekoCanv
 			null // download (last)
 		]
 		NekoUtils.Assert( this.toolSprs.length == this.toolFuncs.length,"Tool spr & func count mismatch!" )
+		this.toolSelectorSpr = new Sprite( "Images/ToolSelector.png" )
 		
 		this.colors = colors
 		this.colorHitboxes = []
 		this.colorInd = 0
+		this.colorSelectorSpr = new Sprite( "Images/ColorSelector.png" )
 		
 		this.canClick = true
 	}
@@ -97,12 +99,23 @@ class NekoCanv
 		for( let i = 0; i < this.toolHitboxes.length; ++i )
 		{
 			const curHitbox = this.toolHitboxes[i]
+			if( i == this.toolInd )
+			{
+				this.toolSelectorSpr.Draw( curHitbox.x,curHitbox.y,gfx,
+					false,this.iconSize / this.toolSprSize )
+			}
 			this.toolSprs[i].Draw( curHitbox.x,curHitbox.y,gfx,false,this.iconSize / this.toolSprSize )
 		}
 		
 		for( let i = 0; i < this.colorHitboxes.length; ++i )
 		{
-			this.colorHitboxes[i].Draw( gfx,this.colors[i] )
+			const curHitbox = this.colorHitboxes[i]
+			curHitbox.Draw( gfx,this.colors[i] )
+			if( i == this.colorInd )
+			{
+				this.colorSelectorSpr.Draw( curHitbox.x,curHitbox.y,gfx,
+					false,this.iconSize / this.toolSprSize )
+			}
 		}
 	}
 	

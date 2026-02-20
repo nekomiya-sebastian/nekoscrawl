@@ -7,13 +7,14 @@ pseudo game about drawing
 				make sure you can use more than just eraser
 			lock canvas to a specific size
 		free - full drawing tool without limitations
-	color picker is just a list of like 1-10 or so colors (that change in random mode - amount & colors)
+	--color picker is just a list of like 1-10 or so colors (that change in random mode - amount & colors)
 	tool ideas
 		pencil - solid filled lines
-		eraser - pencil but erases
-		paintbrush - pencil but with blurry edges
+		--eraser - pencil but erases
+		-paintbrush - pencil but with blurry edges
 		watercolor brush - transparency
 		chalk?
+		color picker
 	slider with like 4 options for brush size - tiny, regular, med big, mega big
 		like 1px, 5px, 25px, 100px sizes
 	name ideas
@@ -21,6 +22,6 @@ pseudo game about drawing
 		nekodraw
 		nekoart_daily
 		*nekodraw_daily
-	js - can download/scrsht art
-		do scr scaling thing so it can run on mobile
+	--js - can download/scrsht art
+		--do scr scaling thing so it can run on mobile
 
