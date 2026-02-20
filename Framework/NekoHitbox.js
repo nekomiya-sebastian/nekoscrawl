@@ -1,6 +1,6 @@
 class Hitbox
 {
-	constructor( x,y,width,height,centered = true )
+	constructor( x,y,width,height,centered = false )
 	{
 		this.x = x
 		this.y = y

@@ -63,3 +63,17 @@ NekoUtils.ShuffleArr = function( arr )
 	
 	return( arr )
 }
+
+NekoUtils.RandColor = function()
+{
+	let color = "#"
+	
+	for( let i = 0; i < 6; ++i )
+	{
+		const choice = NekoUtils.RandInt( 0,9 + 6 )
+		if( choice < 9 ) color += NekoUtils.RandInt( 0,9 ).toString()
+		else color += String.fromCharCode( 65 + NekoUtils.RandInt( 0,6 ) )
+	}
+	
+	return( color )
+}

@@ -3,15 +3,19 @@ pseudo game about drawing
 	maybe gives random adjective & word each time for you to draw
 		daily mode where it generates based on the date
 		random - gives prompt & random limitations
+			can only use certain colors, brushes, & brush sizes
+				make sure you can use more than just eraser
+			lock canvas to a specific size
 		free - full drawing tool without limitations
-	take insp from draw something app for simplicity in tools
-		slider with like 4 options for brush size - tiny, regular, med big, mega big
-			like 1px, 5px, 25px, 100px sizes
-			canvas size of like 500x500px max maybe
-		few brush types - basic, transparent
-		color picker is just a list of like 2-10 or so colors (that change in random mode - amount & colors)
-		/maybe just 1 level of undo/redo queue
-		figure out whether there's more free space in x or y, then move tools accordingly
+	color picker is just a list of like 1-10 or so colors (that change in random mode - amount & colors)
+	tool ideas
+		pencil - solid filled lines
+		eraser - pencil but erases
+		paintbrush - pencil but with blurry edges
+		watercolor brush - transparency
+		chalk?
+	slider with like 4 options for brush size - tiny, regular, med big, mega big
+		like 1px, 5px, 25px, 100px sizes
 	name ideas
 		nekopaint
 		nekodraw

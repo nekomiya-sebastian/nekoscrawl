@@ -1,9 +1,9 @@
 class NekoCanv
 {
-	constructor()
+	constructor( colors )
 	{
 		this.canvPos = Vec2.Zero()
-		this.canvSize = new Vec2( 32,32 ) // 200,200
+		this.canvSize = new Vec2( 200,200 ) // 200,200
 		
 		this.canv = document.getElementById( "drawcanv" )
 		this.canv.width = this.canvSize.x
@@ -15,20 +15,86 @@ class NekoCanv
 		
 		this.canvScale = 1
 		
-		this.FillRect( 0,0,this.canvSize.x,this.canvSize.y,"white" )
+		this.bgCol = "white"
+		this.FillRect( 0,0,this.canvSize.x,this.canvSize.y,this.bgCol )
 		
 		this.prevMousePos = new Vec2( -1,-1 )
+		
+		this.brushSize = 3
+		
+		this.iconSize = 1
+		
+		this.toolSprs = [
+			new Sprite( "Images/Brush.png" ),
+			new Sprite( "Images/Eraser.png" )
+		]
+		this.toolSprSize = 12
+		this.toolHitboxes = []
+		this.toolInd = 0
+		this.toolFuncs = [
+			this.BrushFunc,
+			this.EraserFunc
+		]
+		NekoUtils.Assert( this.toolSprs.length == this.toolFuncs.length,"Tool spr & func count mismatch!" )
+		
+		this.colors = colors
+		this.colorHitboxes = []
+		this.colorInd = 0
 	}
 	
 	Update( mouse,kbd )
 	{
-		// const botRight = this.canvPos.Copy().Add( this.canvSize.Copy().Scale( this.canvScale ) )
+		// keybinds
+		// 1-9 = colors
+		// something to change brushes
+		// [ ] to change brush size
+		
+		if( mouse.down )
+		{
+			for( let i = 0; i < this.toolHitboxes.length; ++i )
+			{
+				if( this.toolHitboxes[i].Contains( mouse.x,mouse.y ) )
+				{
+					this.toolInd = i
+					break
+				}
+			}
+			
+			for( let i = 0; i < this.colorHitboxes.length; ++i )
+			{
+				if( this.colorHitboxes[i].Contains( mouse.x,mouse.y ) )
+				{
+					this.colorInd = i
+					break
+				}
+			}
+		}
 	}
 	
 	Draw( gfx )
 	{
 		gfx.context.drawImage( this.canv,this.canvPos.x,this.canvPos.y,
 			this.canvSize.x * this.canvScale,this.canvSize.y * this.canvScale )
+		
+		for( let i = 0; i < this.toolHitboxes.length; ++i )
+		{
+			const curHitbox = this.toolHitboxes[i]
+			this.toolSprs[i].Draw( curHitbox.x,curHitbox.y,gfx,false,this.iconSize / this.toolSprSize )
+		}
+		
+		for( let i = 0; i < this.colorHitboxes.length; ++i )
+		{
+			this.colorHitboxes[i].Draw( gfx,this.colors[i] )
+		}
+	}
+	
+	BrushFunc( x,y,self )
+	{
+		self.FillCircle( x,y,self.brushSize,self.GetCurColor() )
+	}
+	EraserFunc( x,y,self )
+	{
+		self.FillCircle( x,y,self.brushSize,self.bgCol )
 	}
 	
 	FillRect( x,y,w,h,color )
@@ -36,7 +102,6 @@ class NekoCanv
 		this.ctx.fillStyle = color
 		this.ctx.fillRect( x,y,w,h )
 	}
-	
 	FillCircle( x,y,rad,color )
 	{
 		this.ctx.fillStyle = color
@@ -67,11 +132,6 @@ class NekoCanv
 	{
 		if( mouse.down )
 		{
-			const brushSize = 3
-			const brushCol = "cyan"
-			// const brushSize = 1
-			// const brushCol = "cyan"
-			
 			const testMousePos = new Vec2( mouse.x,mouse.y ).Subtract( this.canvPos )
 				.Divide( this.canvScale ).Floorify()
 			if( testMousePos.x >= 0 && testMousePos.x < this.canvSize.x &&
@@ -94,14 +154,12 @@ class NekoCanv
 				
 				for( const spot of spots )
 				{
-					// this.FillRect( Math.floor( spot.x ),
+					// this.brushShapeFuncs[this.curBrush]( Math.floor( spot.x ),
 					// 	Math.floor( spot.y ),
-					// 	brushSize,brushSize,
-					// 	brushCol )
-					this.FillCircle( Math.floor( spot.x ),
-						Math.floor( spot.y ),
-						brushSize / 2,
-						brushCol )
+					// 	this.brushSize,
+					// 	this.colors[this.colorInd],
+					// 	this )
+					this.toolFuncs[this.toolInd]( spot.x,spot.y,this )
 				}
 				
 				this.prevMousePos = testMousePos
@@ -123,5 +181,31 @@ class NekoCanv
 		
 		gfx.context.imageSmoothingEnabled = false
 		gfx.context.mozImageSmoothingEnabled = false
+		
+		this.iconSize = this.canvScale * 30
+		
+		const toolX = this.canvPos.x
+		const toolY = this.canvPos.y - this.iconSize
+		for( let i = 0; i < this.toolFuncs.length; ++i )
+		{
+			this.toolHitboxes[i] = new Hitbox( toolX + i * this.iconSize,toolY,
+				this.iconSize,this.iconSize )
+		}
+		
+		const totalColorSize = this.iconSize * this.colors.length
+		const colorX = this.canvPos.x + ( this.canvSize.x * this.canvScale / 2 ) - totalColorSize / 2
+		const colorY = this.canvPos.y + this.canvSize.y * this.canvScale
+		for( let i = 0; i < this.colors.length; ++i )
+		{
+			// gfx.DrawRect( drawX + i * colDrawSize,drawY,
+			// 	colDrawSize,colDrawSize,this.colors[i] )
+			this.colorHitboxes[i] = new Hitbox( colorX + i * this.iconSize,colorY,
+				this.iconSize,this.iconSize )
+		}
+	}
+	
+	GetCurColor()
+	{
+		return( this.colors[this.colorInd] )
 	}
 }

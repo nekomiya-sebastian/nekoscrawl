@@ -6,7 +6,11 @@ class Main
 		this.mouse = new Mouse( this.gfx )
 		this.kbd = new Keyboard( this.gfx )
 		
-		this.nekoCanv = new NekoCanv()
+		const colors = []
+		const nCols = NekoUtils.RandInt( 1,10 )
+		for( let i = 0; i < nCols; ++i ) colors.push( NekoUtils.RandColor() )
+		
+		this.nekoCanv = new NekoCanv( colors )
 		this.mouse.SetNekoCanv( this.nekoCanv )
 		this.mouse.SetMain( this )
 		this.gfx.SetNekoCanv( this.nekoCanv )

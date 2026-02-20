@@ -22,7 +22,7 @@ class Sprite
 		}
 	}
 	
-	Draw( x,y,gfx,flipped = false,scale = gfx.sprScale )
+	Draw( x,y,gfx,flipped = false,scale = 1 )
 	{
 		gfx.DrawSprite( x,y,this,flipped,scale )
 	}
