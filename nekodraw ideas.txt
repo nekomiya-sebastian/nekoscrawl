@@ -1,8 +1,8 @@
 pseudo game about drawing
 	with limitations - like can only use certain colors/brushes
 	maybe gives random adjective & word each time for you to draw
-		daily mode where it generates based on the date - random prompt & colors
-		random - gives rand prompt & colors
+		--daily mode where it generates based on the date - random prompt & colors
+		--random - gives rand prompt & colors
 		/free - full drawing tool without limitations
 		/	idk how we handle color in this mode tho
 	tool ideas

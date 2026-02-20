@@ -118,10 +118,6 @@ class NekoCanv
 	
 	Draw( gfx,textDrawer )
 	{
-		textDrawer.DrawText( this.prompt,new Vec2(
-			gfx.width * 0.5,this.canvScale * 0.1 ),
-			gfx,true,false,this.canvScale * 5 )
-		
 		gfx.context.drawImage( this.canv,this.canvPos.x,this.canvPos.y,
 			this.canvSize.x * this.canvScale,this.canvSize.y * this.canvScale )
 		
@@ -157,6 +153,11 @@ class NekoCanv
 			}
 			this.sizeSprs[i].Draw( curHitbox.x,curHitbox.y,gfx,false,this.iconSize / this.toolSprSize )
 		}
+		
+		const promptScale = this.canvScale * 5
+		textDrawer.DrawText( this.prompt,new Vec2(
+			gfx.width / 2,this.toolHitboxes[0].y - promptScale * 5 ),
+			gfx,true,true,promptScale )
 	}
 	
 	BrushFunc( x,y,self )

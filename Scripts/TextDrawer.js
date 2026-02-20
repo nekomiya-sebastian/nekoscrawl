@@ -22,7 +22,7 @@ class TextDrawer
 		}
 		if( centerY )
 		{
-			const totalHeight = drawY * scale
+			const totalHeight = drawY
 			drawY -= totalHeight / 2
 		}
 		
@@ -35,7 +35,7 @@ class TextDrawer
 				gfx.context.drawImage( this.letterSpr.sprite,
 					letterInd * ( this.letterSize.x + 1 ),0, // source loc
 					this.letterSize.x,this.letterSize.y, // source size
-					drawX + i * ( this.letterSize.x + 1 ) * scale,drawY * scale, // draw pos
+					drawX + i * ( this.letterSize.x + 1 ) * scale,drawY, // draw pos
 					this.letterSize.x * scale,this.letterSize.y * scale ) // draw scaling
 			}
 			else
