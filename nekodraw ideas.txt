@@ -1,27 +1,25 @@
 pseudo game about drawing
 	with limitations - like can only use certain colors/brushes
 	maybe gives random adjective & word each time for you to draw
-		daily mode where it generates based on the date
-		random - gives prompt & random limitations
-			can only use certain colors, brushes, & brush sizes
-				make sure you can use more than just eraser
-			lock canvas to a specific size
-		free - full drawing tool without limitations
-	--color picker is just a list of like 1-10 or so colors (that change in random mode - amount & colors)
+		daily mode where it generates based on the date - random prompt & colors
+		random - gives rand prompt & colors
+		/free - full drawing tool without limitations
+		/	idk how we handle color in this mode tho
 	tool ideas
-		pencil - solid filled lines
-		--eraser - pencil but erases
-		-paintbrush - pencil but with blurry edges
 		watercolor brush - transparency
 		chalk?
 		color picker
-	slider with like 4 options for brush size - tiny, regular, med big, mega big
-		like 1px, 5px, 25px, 100px sizes
+		some kind of texture brush
 	name ideas
 		nekopaint
 		nekodraw
 		nekoart_daily
-		*nekodraw_daily
-	--js - can download/scrsht art
-		--do scr scaling thing so it can run on mobile
+		nekodraw_daily
+		nekosketch
+		*nekoscrawl
 
+maybe want a confirm download button
+need a proper brush tip showing brush size or smth
+
+button to go back to main menu from canvas
+	confirm "are you sure you want to return" so you don't lose your work

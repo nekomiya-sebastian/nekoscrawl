@@ -31,8 +31,15 @@ class Graphics
 		self.width = self.canvas.width = window.innerWidth
 		self.height = self.canvas.height = window.innerHeight
 		
+		self.context.imageSmoothingEnabled = false
+		self.context.mozImageSmoothingEnabled = false
+		
 		if( self.nekoCanv ) self.nekoCanv.OnCanvResize( self )
-		if( self.main ) self.main.RequestUpdate()
+		if( self.main )
+		{
+			self.main.RequestUpdate()
+			self.main.OnResize( self.main )
+		}
 	}
 	
 	SetNekoCanv( nekoCanv )

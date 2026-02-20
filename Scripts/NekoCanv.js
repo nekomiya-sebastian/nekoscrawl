@@ -1,7 +1,9 @@
 class NekoCanv
 {
-	constructor( colors )
+	constructor( colors,prompt )
 	{
+		this.prompt = prompt
+		
 		this.canvPos = Vec2.Zero()
 		this.canvSize = new Vec2( 200,200 ) // 200,200
 		
@@ -49,7 +51,7 @@ class NekoCanv
 		this.sizeSprs = Anim.GenSprArr( "Images/BrushSize",6 )
 		this.sizes = [
 			1, // single pixel
-			1,
+			2,
 			3,
 			7,
 			15,
@@ -58,7 +60,7 @@ class NekoCanv
 		this.pixelSquareInd = 0
 		NekoUtils.Assert( this.sizeSprs.length == this.sizes.length,"Size sprite count mismatch!" )
 		this.sizeHitboxes = []
-		this.sizeInd = 1
+		this.sizeInd = 3
 		
 		this.canClick = true
 		this.startClickOnCanvas = false
@@ -114,8 +116,12 @@ class NekoCanv
 		else this.canClick = true
 	}
 	
-	Draw( gfx )
+	Draw( gfx,textDrawer )
 	{
+		textDrawer.DrawText( this.prompt,new Vec2(
+			gfx.width * 0.5,this.canvScale * 0.1 ),
+			gfx,true,false,this.canvScale * 5 )
+		
 		gfx.context.drawImage( this.canv,this.canvPos.x,this.canvPos.y,
 			this.canvSize.x * this.canvScale,this.canvSize.y * this.canvScale )
 		
@@ -256,12 +262,9 @@ class NekoCanv
 		const maxXScale = gfx.width / this.canvSize.x
 		const maxYScale = gfx.height / this.canvSize.y
 		
-		this.canvScale = Math.min( maxXScale,maxYScale ) / 2
+		this.canvScale = Math.min( maxXScale,maxYScale ) * 0.6
 		this.canvPos.x = gfx.width / 2 - this.canvSize.x * this.canvScale / 2
 		this.canvPos.y = gfx.height / 2 - this.canvSize.y * this.canvScale / 2
-		
-		gfx.context.imageSmoothingEnabled = false
-		gfx.context.mozImageSmoothingEnabled = false
 		
 		this.iconSize = this.canvScale * 30 * ( ( this.canvSize.x + this.canvSize.y ) / 2 / 200 )
 		

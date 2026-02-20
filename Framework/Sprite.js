@@ -27,6 +27,16 @@ class Sprite
 		gfx.DrawSprite( x,y,this,flipped,scale )
 	}
 	
+	DrawCentered( x,y,gfx,flipped = false,scale = 1 )
+	{
+		if( this.loaded )
+		{
+			gfx.DrawSprite( x - ( this.size.x * scale ) / 2,
+				y - ( this.size.y * scale ) / 2,
+				this,flipped,scale )
+		}
+	}
+	
 	PartDraw( pos,gfx,flipped,scale )
 	{
 		this.Draw( pos.x,pos.y,gfx,flipped,scale )

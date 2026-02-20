@@ -1,8 +1,8 @@
 class Button extends Hitbox
 {
-	constructor( x,y,width,height )
+	constructor( x,y,width,height,centered = false )
 	{
-		super( x,y,width,height )
+		super( x,y,width,height,centered )
 		
 		this.hovering = false
 		this.down = false
@@ -24,6 +24,8 @@ class Button extends Hitbox
 		{
 			this.hovering = this.Contains( mouse.x,mouse.y )
 		}
+		
+		return( this.Pressed() )
 	}
 	
 	Draw( gfx,regularColor = "green",highlightColor = "lime" )
