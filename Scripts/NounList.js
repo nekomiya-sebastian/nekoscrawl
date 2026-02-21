@@ -16,7 +16,7 @@ class NounList extends ItemList
 			"House","Bungalow","Castle","Barn","Palace","Office","Skyscraper","Hotel","Bar","Factory",
 				"Laboratory","Theater","Shed","Academy","Library",
 			"Airplane","Vehicle","Car","Truck","Cart","Tank",
-			"Dwarf","Elf","Dragon","Giant","Witch","Gremlin","Goblin","Gargoyle",
+			"Dwarf","Elf","Dragon","Giant","Witch","Gremlin","Goblin","Gargoyle","Cyclops",
 			"Sword","Knife","Staff","Bow",
 			"Flower","Dandelion","Tulip","Lily","Sunflower","Rose","Bluebell","Poppy",
 			"Wheat","Potato","Tomato",

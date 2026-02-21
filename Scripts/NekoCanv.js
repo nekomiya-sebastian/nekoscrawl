@@ -27,6 +27,7 @@ class NekoCanv
 		this.toolSprs = [
 			new Sprite( "Images/Brush.png" ),
 			new Sprite( "Images/Eraser.png" ),
+			new Sprite( "Images/WatercolorBrush.png" ),
 			
 			new Sprite( "Images/DownloadIcon.png" ) // last
 		]
@@ -37,11 +38,13 @@ class NekoCanv
 		this.toolFuncs = [
 			this.BrushFunc,
 			this.EraserFunc,
+			this.WatercolorFunc,
 			
 			null // download (last)
 		]
 		NekoUtils.Assert( this.toolSprs.length == this.toolFuncs.length,"Tool spr & func count mismatch!" )
 		this.toolSelectorSpr = new Sprite( "Images/ToolSelector.png" )
+		this.watercolorTransparency = 0.03
 		
 		this.colors = colors
 		this.colorHitboxes = []
@@ -173,6 +176,12 @@ class NekoCanv
 	{
 		self.FillCircle( x,y,self.GetBrushSize(),self.bgCol )
 	}
+	WatercolorFunc( x,y,self )
+	{
+		self.ctx.globalAlpha = self.watercolorTransparency
+		self.BrushFunc( x,y,self )
+		self.ctx.globalAlpha = 1.0
+	}
 	
 	FillRect( x,y,w,h,color )
 	{
@@ -303,7 +312,7 @@ class NekoCanv
 	{
 		const downloadLink = document.createElement( 'a' )
 		downloadLink.href = this.canv.toDataURL( "jpg" )
-		downloadLink.download = "nekodraw_image.png"
+		downloadLink.download = this.prompt + ".png"
 		downloadLink.click()
 		downloadLink.remove()
 	}

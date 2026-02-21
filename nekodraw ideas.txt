@@ -6,7 +6,7 @@ pseudo game about drawing
 		/free - full drawing tool without limitations
 		/	idk how we handle color in this mode tho
 	tool ideas
-		watercolor brush - transparency
+		--watercolor brush - transparency
 		chalk?
 		color picker
 		some kind of texture brush
@@ -23,3 +23,7 @@ need a proper brush tip showing brush size or smth
 
 button to go back to main menu from canvas
 	confirm "are you sure you want to return" so you don't lose your work
+
+
+shorts about interesting/good daily drawings in nekodraw
+	like a speed draw/timelapse kind of thing
