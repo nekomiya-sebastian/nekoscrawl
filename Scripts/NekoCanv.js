@@ -80,6 +80,8 @@ class NekoCanv
 		this.startClickOnCanvas = false
 		this.prevMouseDown = false
 		this.freezeMouse = false
+		
+		this.brushPos = Vec2.Zero()
 	}
 	
 	Update( mouse,kbd )
@@ -127,6 +129,8 @@ class NekoCanv
 			this.canClick = false
 		}
 		else this.canClick = true
+		
+		this.brushPos.SetXY( mouse.x,mouse.y )
 	}
 	
 	Draw( gfx,textDrawer )
@@ -171,6 +175,12 @@ class NekoCanv
 		textDrawer.DrawText( this.prompt,new Vec2(
 			gfx.width / 2,this.toolHitboxes[0].y - promptScale * 5 ),
 			gfx,true,true,promptScale )
+		
+		// draw brush tip circle outline
+		gfx.context.beginPath()
+		gfx.context.strokeStyle = "black"
+		gfx.context.arc( this.brushPos.x,this.brushPos.y,this.GetBrushSize() * 2,0,2 * Math.PI )
+		gfx.context.stroke()
 	}
 	
 	BrushFunc( x,y,self )

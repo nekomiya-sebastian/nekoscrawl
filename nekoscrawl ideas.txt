@@ -12,8 +12,6 @@ pseudo game about drawing
 		color picker
 		some kind of texture brush
 
-need a proper brush tip showing brush size or smth
-
 
 shorts about interesting/good daily drawings in nekodraw
 	like a speed draw/timelapse kind of thing
