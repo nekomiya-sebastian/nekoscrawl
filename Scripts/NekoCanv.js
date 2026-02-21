@@ -79,10 +79,12 @@ class NekoCanv
 		this.canClick = true
 		this.startClickOnCanvas = false
 		this.prevMouseDown = false
+		this.freezeMouse = false
 	}
 	
 	Update( mouse,kbd )
 	{
+		if( this.freezeMouse ) return
 		// keybinds
 		// 1-9 = colors
 		// something to change brushes
@@ -96,10 +98,7 @@ class NekoCanv
 				{
 					if( this.toolHitboxes[i].Contains( mouse.x,mouse.y ) )
 					{
-						if( i == this.toolDownloadInd )
-						{
-							this.DownloadImage()
-						}
+						if( i == this.toolDownloadInd ) return( true ) // download
 						else this.toolInd = i
 						
 						break
@@ -250,6 +249,8 @@ class NekoCanv
 	
 	OnMouseUpdate( mouse )
 	{
+		if( this.freezeMouse ) return
+		
 		if( mouse.down )
 		{
 			const testMousePos = new Vec2( mouse.x,mouse.y ).Subtract( this.canvPos )
@@ -349,6 +350,15 @@ class NekoCanv
 		downloadLink.download = this.prompt + ".png"
 		downloadLink.click()
 		downloadLink.remove()
+	}
+	
+	ToggleFreezeMouse( frozen )
+	{
+		this.freezeMouse = frozen
+		if( frozen )
+		{
+			this.canClick = false
+		}
 	}
 	
 	GetCurColor()

@@ -12,11 +12,7 @@ pseudo game about drawing
 		color picker
 		some kind of texture brush
 
-maybe want a confirm download button
 need a proper brush tip showing brush size or smth
-
-button to go back to main menu from canvas
-	confirm "are you sure you want to return" so you don't lose your work
 
 
 shorts about interesting/good daily drawings in nekodraw
