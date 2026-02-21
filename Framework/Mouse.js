@@ -70,11 +70,11 @@ class Mouse
 	
 	SetMousePos( inputX,inputY,self,canv )
 	{
-		const boundingRect = canv.getBoundingClientRect()
-		const docElement = document.documentElement
+		// const boundingRect = canv.getBoundingClientRect()
+		// const docElement = document.documentElement
 		
-		self.x = inputX - boundingRect.left - docElement.scrollLeft
-		self.y = inputY - boundingRect.top - docElement.scrollTop
+		self.x = inputX// - boundingRect.left - docElement.scrollLeft
+		self.y = inputY// - boundingRect.top - docElement.scrollTop
 		
 		if( self.nekoCanv ) self.nekoCanv.OnMouseUpdate( self )
 		if( self.main ) self.main.RequestUpdate()

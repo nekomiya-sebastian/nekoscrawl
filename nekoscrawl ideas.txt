@@ -3,8 +3,9 @@ pseudo game about drawing
 	maybe gives random adjective & word each time for you to draw
 		--daily mode where it generates based on the date - random prompt & colors
 		--random - gives rand prompt & colors
-		/free - full drawing tool without limitations
-		/	idk how we handle color in this mode tho
+		free - full drawing tool without limitations
+			rgb/hsb sliders or some kind of color picker
+				regular color blocks are used for color history
 	tool ideas
 		--watercolor brush - transparency
 		--chalk
