@@ -74,7 +74,8 @@ class NekoCanv
 		this.pixelSquareInd = 0
 		NekoUtils.Assert( this.sizeSprs.length == this.sizes.length,"Size sprite count mismatch!" )
 		this.sizeHitboxes = []
-		this.sizeInd = 3
+		this.initSizeInd = 3
+		this.sizeInd = this.initSizeInd
 		
 		this.canClick = true
 		this.startClickOnCanvas = false
@@ -179,7 +180,7 @@ class NekoCanv
 		// draw brush tip circle outline
 		gfx.context.beginPath()
 		gfx.context.strokeStyle = "black"
-		gfx.context.arc( this.brushPos.x,this.brushPos.y,this.GetBrushSize() * 2,0,2 * Math.PI )
+		gfx.context.arc( this.brushPos.x,this.brushPos.y,this.GetBrushSize() * 3,0,2 * Math.PI )
 		gfx.context.stroke()
 	}
 	
@@ -369,6 +370,20 @@ class NekoCanv
 		{
 			this.canClick = false
 		}
+	}
+	
+	ResetCanv( colors,prompt )
+	{
+		this.colors = colors
+		this.colorHitboxes = []
+		this.colorInd = 0
+		
+		this.sizeInd = this.initSizeInd
+		this.toolInd = 0
+		
+		this.prompt = prompt
+		
+		this.FillRect( 0,0,this.canvSize.x,this.canvSize.y,this.bgCol )
 	}
 	
 	GetCurColor()

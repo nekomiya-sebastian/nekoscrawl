@@ -18,7 +18,7 @@ class Main
 			new ImageButton( 0,0,new Sprite( "Images/RandomButton.png" ),true )
 		]
 		
-		this.nekoCanv = null
+		this.nekoCanv = new NekoCanv( [ "red","blue","yellow" ],"Flower" )
 		this.mouse.SetMain( this )
 		this.gfx.SetMain( this )
 		
@@ -33,6 +33,7 @@ class Main
 		this.confirmDownloadButton = new ImageButton( 0,0,new Sprite( "Images/DownloadImageButton.png" ),true )
 		this.downloadTest = false
 		this.freezeMouse = false
+		this.canClick = true
 		
 		this.gfx.UpdateCanvSize( this.gfx )
 	}
@@ -42,14 +43,19 @@ class Main
 		switch( this.menu )
 		{
 			case 0: // menu
-				for( let i = 0; i < this.buttons.length; ++i )
+				if( !this.mouse.down ) this.canClick = true
+				if( this.canClick )
 				{
-					if( this.buttons[i].Update( this.mouse ) )
+					for( let i = 0; i < this.buttons.length; ++i )
 					{
-						this.GenerateCanv( i )
-						this.menu = 1
-						this.FreezeCanvMouse( true )
-						break
+						if( this.buttons[i].Update( this.mouse ) )
+						{
+							this.GenerateCanv( i )
+							this.menu = 1
+							this.FreezeCanvMouse( true )
+							this.canClick = false
+							break
+						}
 					}
 				}
 				break
@@ -60,6 +66,7 @@ class Main
 					{
 						this.menu = 0
 						this.leaveTest = false
+						this.canClick = false
 					}
 					if( this.noButton.Update( this.mouse ) ) this.leaveTest = false
 				}
@@ -179,7 +186,7 @@ class Main
 			prompt = this.adjList.GetRandItem() + " " + this.nounList.GetRandItem()
 		}
 		
-		this.nekoCanv = new NekoCanv( colors,prompt )
+		this.nekoCanv.ResetCanv( colors,prompt )
 		this.mouse.SetNekoCanv( this.nekoCanv )
 		this.gfx.SetNekoCanv( this.nekoCanv )
 	}
