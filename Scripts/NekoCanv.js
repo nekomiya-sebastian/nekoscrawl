@@ -180,7 +180,7 @@ class NekoCanv
 		// draw brush tip circle outline
 		gfx.context.beginPath()
 		gfx.context.strokeStyle = "black"
-		gfx.context.arc( this.brushPos.x,this.brushPos.y,this.GetBrushSize() * 3,0,2 * Math.PI )
+		gfx.context.arc( this.brushPos.x,this.brushPos.y,this.GetBrushSize() * 2,0,2 * Math.PI )
 		gfx.context.stroke()
 	}
 	
